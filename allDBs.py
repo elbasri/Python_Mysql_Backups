@@ -5,9 +5,8 @@ import os
 from datetime import datetime
 from config import db_config  # استيراد بيانات الاتصال من ملف config.py
 
-# مسار حفظ النسخ الاحتياطية - تغييره حسب النظام
-BACKUP_DIR = r"C:\backups\\files"  # ويندوز
-# BACKUP_DIR = "/home/backups/files"  # لينكس
+# مسار حفظ النسخ الاحتياطية
+BACKUP_DIR = r"../files"
 
 TIMESTAMP = datetime.now().strftime("%Y%m%d-%H%M%S")
 
