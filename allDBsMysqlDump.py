@@ -15,8 +15,6 @@ BACKUP_DIR = r"C:\backups\\files"  # ويندوز
 
 TIMESTAMP = datetime.now().strftime("%Y%m%d-%H%M%S")
 
-mysqldump_cmd = ["mysqldump", "-h", DB_HOST, "-u", DB_USER, "-p" + DB_PASSWORD]
-
 # الحصول على قائمة قواعد البيانات
 list_databases_cmd = ["mysql", "-h", DB_HOST, "-u", DB_USER, "-p" + DB_PASSWORD, "-e", "SHOW DATABASES"]
 result = subprocess.run(list_databases_cmd, stdout=subprocess.PIPE, text=True, check=True)
@@ -27,9 +25,12 @@ for database in databases:
     print(f"جاري العمل على القاعدة: {database}")
     if database not in ["information_schema", "performance_schema", "mysql", "sys"]:
         backup_file = os.path.join(BACKUP_DIR, f"{database}_{TIMESTAMP}.sql")
-        # تنفيذ أمر mysqldump لكل قاعدة بيانات
+        
+        # تكوين أمر mysqldump لكل قاعدة بيانات
+        mysqldump_cmd = ["mysqldump", "-h", DB_HOST, "-u", DB_USER, "-p" + DB_PASSWORD, "--databases", database, "--result-file", backup_file]
+
         try:
-            subprocess.run(mysqldump_cmd + ["--databases", database, "--result-file", backup_file], check=True)
+            subprocess.run(mysqldump_cmd, check=True)
             print(f"تم إنشاء نسخة من القاعدة: {database}")
         except subprocess.CalledProcessError as e:
             print(f"هناك مشكلة في القاعدة: {database}: {e}")
