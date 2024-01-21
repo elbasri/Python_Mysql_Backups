@@ -9,10 +9,15 @@ DB_HOST = db_config['host']
 DB_USER = db_config['user']
 DB_PASSWORD = db_config['passwd']
 
-# مسار حفظ النسخ الاحتياطية
-BACKUP_DIR = r"../files"
+# مسار حفظ النسخ الاحتياطية - تغييره حسب النظام
+BACKUP_DIR = r"C:\backups\files"  # ويندوز
+# BACKUP_DIR = "/home/backups/files"  # لينكس
 
 TIMESTAMP = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+# التأكد من وجود مجلد النسخ الاحتياطية
+if not os.path.exists(BACKUP_DIR):
+    os.makedirs(BACKUP_DIR)
 
 # الحصول على قائمة قواعد البيانات
 list_databases_cmd = ["mysql", "-h", DB_HOST, "-u", DB_USER, "-p" + DB_PASSWORD, "-e", "SHOW DATABASES"]
