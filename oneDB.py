@@ -1,14 +1,10 @@
+# سكريبت لأخذ نسخة احتياطية من قاعدة بيانات MySQL محددة كل 12 ساعة
+
 import mysql.connector
 import subprocess
 import time
 from datetime import datetime
-
-db_config = {
-    'host': '10.0.15.1',
-    'user': 'nacer',
-    'passwd': 'pwd123PWD123',
-    'database': 'drupal'
-}
+from config import db_config  # استيراد بيانات الاتصال من ملف config.py
 
 def backup_database():
     filename = f"backup_{datetime.now().strftime('%Y%m%d%H%M%S')}.sql"
@@ -16,6 +12,7 @@ def backup_database():
         db = mysql.connector.connect(**db_config)
         print(f"تم الإتصال بقاعدة البيانات: {db_config['database']}")
 
+        # تنفيذ أمر mysqldump لأخذ النسخة الاحتياطية
         with open(filename, 'w') as output_file:
             subprocess.run(['mysqldump', '-h', db_config['host'], '-u', db_config['user'], '-p'+db_config['passwd'], db_config['database']], stdout=output_file)
         print(f"تم النسخ بنجاح: {filename}")
@@ -27,6 +24,7 @@ def backup_database():
             db.close()
             print("تم إغلاق الإتصال")
 
+# حلقة لتشغيل النسخ الاحتياطي كل 12 ساعة
 while True:
     backup_database()
     print("توقف لـ 12 ساعة...")
