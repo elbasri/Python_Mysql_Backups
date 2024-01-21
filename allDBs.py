@@ -6,7 +6,10 @@ DB_HOST = "10.0.15.1"
 DB_USER = "nacer"
 DB_PASSWORD = "pwd123PWD123" 
 
-BACKUP_DIR = r"C:\backups"
+#ويندوز
+BACKUP_DIR = r"C:\backups\\files"
+#لينكس
+#BACKUP_DIR = "/home/backups/files"
 
 TIMESTAMP = datetime.now().strftime("%Y%m%d-%H%M%S")
 
@@ -22,7 +25,7 @@ result = subprocess.run(list_databases_cmd, stdout=subprocess.PIPE, text=True, c
 databases = result.stdout.strip().split('\n')[1:]
 
 for database in databases:
-
+    print(f"جاري العمل على القاعدة: {database}")
     database = database.strip()
     if database not in ["information_schema", "performance_schema", "mysql", "sys"]:
         backup_file = os.path.join(BACKUP_DIR, f"{database}_{TIMESTAMP}.sql")
@@ -30,6 +33,6 @@ for database in databases:
         
         try:
             subprocess.run(mysqldump_cmd, check=True)
-            print(f"Backup completed for database: {database}")
+            print(f"تم إنشاء نسخة من القاعدة : {database}")
         except subprocess.CalledProcessError as e:
-            print(f"Error during backup of database {database}: {e}")
+            print(f"هناك مشكلة في القاعدة: {database}: {e}")
