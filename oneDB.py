@@ -7,7 +7,7 @@ from datetime import datetime
 from config import db_config  # استيراد بيانات الاتصال من ملف config.py
 
 def backup_database():
-    filename = f"backup_{datetime.now().strftime('%Y%m%d%H%M%S')}.sql"
+    filename = f"../files/backup_{datetime.now().strftime('%Y%m%d%H%M%S')}.sql"
     try:
         db = mysql.connector.connect(**db_config)
         print(f"تم الإتصال بقاعدة البيانات: {db_config['database']}")

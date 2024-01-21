@@ -6,7 +6,7 @@ from datetime import datetime
 from config import db_config  # استيراد بيانات الاتصال من ملف config.py
 
 def backup_database():
-    filename = f"backup_{datetime.now().strftime('%Y%m%d%H%M%S')}.sql"
+    filename = f"../files/backup_{datetime.now().strftime('%Y%m%d%H%M%S')}.sql"
     try:
         # تنفيذ أمر mysqldump لأخذ النسخة الاحتياطية
         with open(filename, 'w') as output_file:
